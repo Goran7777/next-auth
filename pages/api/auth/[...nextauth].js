@@ -31,8 +31,8 @@ export default NextAuth({
 
         if (!isValid) {
           client.close();
-          throw new Error('Could not you log in!');
           console.log('Cant login!');
+          throw new Error('Could not you log in!');
         }
         client.close();
         console.log(`User with email ${user.email} successfully logged in!`);

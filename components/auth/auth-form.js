@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import classes from './auth-form.module.css';
 
 async function createUser(email, password) {
@@ -23,6 +24,7 @@ async function createUser(email, password) {
 function AuthForm() {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
 
   function switchAuthModeHandler() {
@@ -33,23 +35,33 @@ function AuthForm() {
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
     // validation inputs here
+
     if (isLogin) {
       const result = await signIn('credentials', {
         redirect: false,
         email: enteredEmail,
         password: enteredPassword,
       });
-
+      // router.push('/');
       console.log(result);
+      if (!result.error) {
+        router.replace('/profile');
+      }
     } else {
       try {
         const result = await createUser(enteredEmail, enteredPassword);
+
         console.log(result);
       } catch (error) {
+        // emailInputRef.current.value = '';
+        // passwordInputRef.current.value = '';
         console.log(error);
       }
     }
   }
+  // if (status === 'authenticated') {
+  //   return <p></p>;
+  // }
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
