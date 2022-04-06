@@ -9,8 +9,6 @@ function MainNavigation() {
   async function logoutHandler() {
     await signOut();
   }
-  console.log(session);
-  console.log(status);
   return (
     <header className={classes.header}>
       <Link href="/">
